@@ -3,12 +3,15 @@ require 'pry-rails'
 # Aceita somente params estaticos
 l = lambda {|param| param * 5}
 p l.call(4)
+# Outra sintax para lambdas com uma unica linha
+l_s = ->(nomes) { nomes.each { |nome| p nome } }
+l_s.call(%w[Jorge Luis Lima])
 
 # Aceita params dinamicos
 pr = proc {|param| 'Testando Proc'}
 p pr.call(5, 6)
 
-####### METODO DINAMICO  
+####### METODO DINAMICO -- CHAMANDO BLOCOS  
 # O & aceita como parametro um bloco
 def metodo(&bloco)
   bloco
@@ -16,6 +19,19 @@ end
 
 m = metodo {|pams| 'Metodos dinamicos'}
 p m.call
+
+# É POSSIVEL EXECUTAR UM BLOCO COM O CAMANDO yield
+def bloco_yield
+  # Veridicar se bloco foi chamado como parametro
+  if block_given?
+    yield
+  else
+    p "Chamda para o yeld sem parametros"
+  end
+end
+bloco_yield 
+bloco_yield { p "yeld com parametros tipo bloco" }
+
 #######################
 
 ##### IMPLEMENTAÇÃO ATTR_ACCESSOR
