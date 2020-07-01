@@ -10,8 +10,8 @@ const symbols = [
 ]
 
 fn.readDir(path_legends)
-  .then(files => fn.elementsEndingWith(files, '.srt'))
-  .then(filesSRT => fn.readFiles(filesSRT))
+  .then(fn.elementsEndingWith('.srt'))
+  .then(fn.readFiles)
   .then(fn.joinContent)
   .then(fn.splitTextBy('\n'))
   .then(fn.removeEmptyElements)

@@ -2,6 +2,19 @@ const fs = require('fs')
 const path = require('path')
 const { resolve } = require('path')
 
+
+function composite(...fns){
+  return valor => {
+    return fns.reduce(async (acc, fn) => {
+      if(Promise.resolve(acc) === acc){
+        return fn(await acc)
+      } else {
+        return fn(acc)
+      }
+    }, valor)
+  }
+}
+
 function readDir(path_files) {
   return new Promise((resolve, reject) => {
     try {
@@ -14,8 +27,10 @@ function readDir(path_files) {
   })
 }
 
-function elementsEndingWith(array, pattern){
-  return array.filter(item => item.endsWith(pattern))
+function elementsEndingWith(pattern){
+  return array => {
+    return array.filter(item => item.endsWith(pattern))
+  }
 }
 
 function readFile(file){
@@ -96,6 +111,7 @@ function orderByElements(attr, order = 'asc'){
 }
 
 module.exports = {
+  composite,
   readDir,
   elementsEndingWith,
   readFiles,
